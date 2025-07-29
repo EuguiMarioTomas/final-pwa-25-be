@@ -97,6 +97,7 @@ const getArchivedRemindersByAuthor= async(req: Request, res: Response) => {
       return;
     }
     const reminders = await Reminder.find({
+      author: authorId,
       isArchived: true,
     }).populate('author', 'userName email').sort({type: 1});
     res.status(200).json({
