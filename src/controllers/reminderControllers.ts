@@ -116,7 +116,57 @@ const getArchivedRemindersByAuthor= async(req: Request, res: Response) => {
 //Autoactivacion de recordatorios
 // (Esta funcionalidad no está implementada en el código actual, pero se puede agregar en el futuro si es necesario)
 
+//Obtener recordatorios por id
+const getReminderById = async(req: Request, res: Response)=>{
+  try{
+    const {reminderId} = req.params;
+    const reminder = await Reminder.findById(reminderId);
+    if(!reminder){
+      return res.status(404).json({
+        message:('Recordatorio no encontrado.🔴'),
+        error: true,
+      });
+    }
+    res.status(200).json({
+      message:'Recordatorio obtenido.🟢',
+      data: reminder,
+      error: false,
+    });
+  }catch(error:any){
+    res.status(500).json({
+      message: "Error al obtener el recordatorio.🔴",
+      error: error.message,
+    });
+  }
+};
 
+//Otener recordatorios a punto de vencer
+const getUpcomingReminders = async(req:Request, res:Response)=>{
+  try{
+    const {authorId} = req.params;
+    const now = new Date();
+    const startOfTodayUTC = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),0,0,0,0));
+    const endOfRangeUTC = new Date(startOfTodayUTC.getTime()); //Clonar la fecha de inciio
+    endOfRangeUTC.setUTCDate(startOfTodayUTC.getUTCDate() + 7); //sumar 7 dias al dia utc
+    endOfRangeUTC.setUTCHours(23, 59, 59, 999); //Establece la hora final del dia 7 UTC
+
+    const reminders = await Reminder.find({
+      author: authorId,
+      isArchived: false,
+      dueDate: {$gte: startOfTodayUTC, $lte: endOfRangeUTC} //Solo los que aun no vencieron, solo compara la fecha no las horas
+    }).sort({dueDate: 1}).limit(4); //Ordenar por fecha mas proxima y maximo 4
+    res.status(200).json({
+      message: 'Recordatorios proximos obtenidos.🟢',
+      data: reminders,
+      error: false
+    });
+  }catch(error:any){
+    res.status(400).json({
+      message: 'Error al obtener recordatorios por vencer.🔴',
+      error: error.message,
+    });
+  }
+};
 
 //Actualizar recordatorios
 const updateReminder = async(req: Request, res: Response)=>{
@@ -216,6 +266,8 @@ export{
   getRemindersByAuthor,
   getSharedReminders,
   getArchivedRemindersByAuthor,
+  getReminderById,
+  getUpcomingReminders,
   updateReminder,
   sharedWith,
   softDeleteReminder
