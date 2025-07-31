@@ -171,9 +171,9 @@ const getUpcomingReminders = async(req:Request, res:Response)=>{
 //Actualizar recordatorios
 const updateReminder = async(req: Request, res: Response)=>{
   try{
-    const {id} = req.params;
+    const {reminderId} = req.params;
     const {title, description, type, dueDate} = req.body;
-    const reminder = await Reminder.findByIdAndUpdate(id,{title, description, type, dueDate}, {new: true, runValidators: true});
+    const reminder = await Reminder.findByIdAndUpdate(reminderId,{title, description, type, dueDate}, {new: true, runValidators: true});
     if(!reminder){
       res.status(404).json({
         message: 'Recordatorio no encontrado.🟡',
