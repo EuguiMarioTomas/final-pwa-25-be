@@ -3,7 +3,7 @@
 *
 * DEPENDENCIAS
 * npm i -y                    //LISTO
-* [Cors] npm i cors           //
+* [Cors] npm i cors           //LISTO
 * [Dotenv] npm i dotenv       //LISTO
 * [Express] npm i express     //LISTO
 * [MongoDB] npm i mongodb     //LISTO
@@ -13,10 +13,10 @@
 * [Nodemon] npm i nodemon -D                      //LISTO
 * [Typescript] npm i typescript -D
 * [Node] npm i ts-node ts-node-dev @types/node -D //LISTO @types/node ts-node
-* [Eslint] npm i @typescript-eslint/parser -D
+* [Eslint] npm i @typescript-eslint/parser -D     
 * [Express] npm i @types/express -D               //LISTO
 * [Mongoose] npm i @types/mongoose -D
-* [Cors] npm i @types/cors -D
+* [Cors] npm i @types/cors -D                     //LISTO      
 *
 * INICIALIZAR EL PROYECTO TYPESCRIPT
 * npx tsc --init
